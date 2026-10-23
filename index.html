@@ -1,36 +1,265 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Siggi – Geodatenanalyst & Umweltplaner</title>
+<title>Simon Lange – Geodata for nature conservation</title>
+<meta name="description" content="Simon Lange: geospatial analyst working on maps, dashboards and data for nature conservation.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  body { font-family: system-ui, sans-serif; max-width: 640px; margin: 2rem auto; padding: 0 1rem; line-height: 1.6; color: #1a1a1a; background: #fff; }
-  h1 { margin-bottom: 0; }
-  .sub { color: #2e7d32; margin-top: 0; font-weight: 600; }
-  .tags span { display: inline-block; background: #e8f5e9; color: #1b5e20; padding: 2px 10px; margin: 3px 2px; border-radius: 12px; font-size: .9rem; }
-  @media (prefers-color-scheme: dark) {
-    body { background: #121212; color: #eee; }
-    .tags span { background: #1f3a22; color: #a5d6a7; }
-    .sub { color: #81c784; }
-  }
+:root{
+  --bg:#f2f5f3; --surface:#ffffff; --ink:#13241d; --muted:#53655c; --line:#d3ddd7; --accent:#1c6b57; --accent-soft:#dcece5;
+  --head:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif; --body:"Instrument Sans","Segoe UI",system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){--bg:#0f1a15;--surface:#16251e;--ink:#e6efe9;--muted:#a1b3a9;--line:#2a3d34;--accent:#6fcfb0;--accent-soft:#1d3a2f}
+}
+:root[data-theme="dark"]{--bg:#0f1a15;--surface:#16251e;--ink:#e6efe9;--muted:#a1b3a9;--line:#2a3d34;--accent:#6fcfb0;--accent-soft:#1d3a2f}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:4.5rem}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 1.0625rem/1.65 var(--body)}
+a{color:var(--accent)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.wrap{max-width:60rem;margin:0 auto;padding:0 1.25rem}
+h1,h2,h3{font-family:var(--head);line-height:1.15;margin:0}
+p{margin:0 0 1rem;max-width:68ch}
+
+/* nav */
+nav{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding-top:.7rem;padding-bottom:.7rem}
+nav ul{display:flex;gap:1.1rem;list-style:none;margin:0;padding:0;overflow-x:auto;font-size:.95rem;font-weight:500}
+nav ul a{color:var(--muted);text-decoration:none;white-space:nowrap}
+nav ul a:hover{color:var(--accent)}
+.brand{font:700 1.05rem var(--head);color:var(--ink);text-decoration:none;white-space:nowrap}
+#theme{background:none;border:1px solid var(--line);color:var(--ink);border-radius:.5rem;padding:.3rem .6rem;cursor:pointer;font:inherit;font-size:.85rem}
+
+/* hero */
+.hero{padding:4rem 0 3rem}
+.hero .wrap{display:grid;grid-template-columns:1fr 15rem;gap:2.5rem;align-items:center}
+.hero small{display:block;color:var(--accent);font-weight:600;margin-bottom:.8rem}
+.hero h1{font-size:clamp(2.6rem,7vw,4.6rem);letter-spacing:-.02em;margin-bottom:1rem}
+.hero .lead{font-size:1.25rem;color:var(--ink)}
+.links{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1.4rem}
+.btn{display:inline-block;padding:.55rem 1rem;border-radius:.6rem;border:1px solid var(--accent);color:var(--accent);text-decoration:none;font-weight:600;background:none;font:inherit;font-weight:600;cursor:pointer}
+.btn.solid{background:var(--accent);color:var(--bg)}
+.photo{aspect-ratio:4/5;border-radius:1.2rem;background:var(--accent-soft);border:1px dashed var(--accent);display:grid;place-items:center;text-align:center;color:var(--accent);font:700 3rem var(--head)}
+.photo span{display:block;font:500 .85rem var(--body);color:var(--muted);margin-top:.3rem}
+
+/* sections */
+section{padding:3.5rem 0;border-top:1px solid var(--line)}
+section>.wrap>h2{font-size:clamp(1.8rem,4vw,2.5rem);margin-bottom:.4rem}
+.intro{color:var(--muted);margin-bottom:2rem}
+
+/* project cards */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:1rem;padding:1.5rem;margin-bottom:1.25rem}
+.card h3{font-size:1.4rem;margin-bottom:.3rem}
+.meta{color:var(--muted);font-size:.9rem;margin-bottom:.8rem}
+.tags{display:flex;flex-wrap:wrap;gap:.4rem;margin:.9rem 0 0;padding:0;list-style:none}
+.tags li{background:var(--accent-soft);color:var(--accent);border-radius:99px;padding:.15rem .7rem;font-size:.85rem;font-weight:500}
+.card ul.plain{margin:0 0 .5rem;padding-left:1.2rem}
+
+/* timeline */
+.timeline{list-style:none;margin:0;padding:0 0 0 1.4rem;border-left:2px solid var(--line)}
+.timeline li{position:relative;margin-bottom:1.6rem}
+.timeline li::before{content:"";position:absolute;left:calc(-1.4rem - 7px);top:.55rem;width:12px;height:12px;border-radius:50%;background:var(--accent)}
+.timeline .when{font-size:.9rem;color:var(--muted)}
+.timeline h3{font-size:1.15rem}
+.timeline p{margin:.2rem 0 0;color:var(--muted)}
+
+/* skills */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:1.25rem}
+.grid .card{margin:0}
+.grid h3{font-size:1.1rem;margin-bottom:.5rem}
+.grid p{margin:0;color:var(--muted)}
+
+footer{padding:2rem 0 3rem;border-top:1px solid var(--line);color:var(--muted);font-size:.9rem}
+@media (max-width:42rem){
+  .hero .wrap{grid-template-columns:1fr}
+  .photo{max-width:11rem}
+  nav ul{display:none}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 </style>
 </head>
 <body>
-  <h1>Siggi</h1>
-  <p class="sub">Geodatenanalyst · Umweltplanungsingenieur · GIS-Administrator</p>
 
-  <p>Geograph mit Schwerpunkt Geoinformatik. Ich verbinde Umweltplanung und GIS, um aus komplexen Daten verlässliche Entscheidungsgrundlagen und verständliche Karten für unterschiedliche Zielgruppen zu erstellen. Derzeit unterstütze ich beim WWF Deutschland Naturschutzprojekte in Deutschland und Afrika.</p>
-
-  <h2>Skills</h2>
-  <div class="tags">
-    <span>ArcGIS Pro</span><span>ArcGIS Online</span><span>ArcGIS Enterprise</span>
-    <span>QGIS</span><span>SQL</span><span>Python</span><span>Kartografie</span>
-    <span>Dashboards &amp; Storytelling</span><span>Umweltverträglichkeitsprüfung</span>
-    <span>Projektleitung</span><span>MS Office</span>
+<nav>
+  <div class="wrap">
+    <a class="brand" href="#top">Simon Lange</a>
+    <ul>
+      <li><a href="#about">About</a></li>
+      <li><a href="#work">Applied work</a></li>
+      <li><a href="#planning">Environmental planning</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <button id="theme" type="button" aria-label="Toggle light and dark mode">Theme</button>
   </div>
+</nav>
 
-  <h2>Sprachen</h2>
-  <p>Englisch (TOEFL 106) · Französisch (B1+) · Spanisch (B1+)</p>
+<header class="hero" id="top">
+  <div class="wrap">
+    <div>
+      <small>Geospatial analysis · Cartography · Conservation</small>
+      <h1>Simon Lange</h1>
+      <p class="lead"><strong>Geodata for nature conservation.</strong> Geospatial Analyst at WWF Germany, turning spatial data into maps, dashboards and tools that conservation teams can use.</p>
+      <div class="links">
+        <a class="btn solid" href="#work">See my work</a>
+        <a class="btn" href="#contact">Get in touch</a>
+      </div>
+    </div>
+    <div class="photo" role="img" aria-label="Photo placeholder">SL<span>Photo placeholder</span></div>
+  </div>
+</header>
+
+<main>
+<section id="about">
+  <div class="wrap">
+    <h2>About</h2>
+    <p class="intro">Geography, environmental planning and GIS in one profile.</p>
+    <p>I work as a Geospatial Analyst in the Earth Observation department of the Africa team at WWF Germany. There I support conservation projects in Germany and several African countries with web maps, dashboards, cartography for reports and fieldwork, and automated data workflows.</p>
+    <p>Before that, I led environmental planning projects at DB Engineering &amp; Consulting and administered the company's ArcGIS Enterprise system. That mix lets me connect legal requirements, complex project areas and spatial analysis into decisions people can rely on.</p>
+  </div>
+</section>
+
+<section id="work">
+  <div class="wrap">
+    <h2>Applied work</h2>
+    <p class="intro">Selected work at WWF Germany.</p>
+
+    <article class="card">
+      <h3>Dashboards and web experiences</h3>
+      <div class="meta">WWF Germany · interactive applications for the wider public and internal teams</div>
+      <p>Web-based map applications that make conservation data explorable for non-specialists.</p>
+      <ul class="plain">
+        <li>Mangroves of Tanzania</li>
+        <li>Fischerei-Explorer Nordsee</li>
+        <li>Mitarbeitendentag 2026</li>
+      </ul>
+      <ul class="tags"><li>ArcGIS Online</li><li>Dashboards</li><li>Storytelling</li></ul>
+    </article>
+
+    <article class="card">
+      <h3>Cartography for reports, press and meetings</h3>
+      <div class="meta">WWF Germany · project reports, press releases, fieldwork</div>
+      <p>Maps that translate complex scientific findings for different audiences.</p>
+      <ul class="plain">
+        <li>IKI Mining Zimbabwe and Zambia</li>
+        <li>Forest Landscape Restoration Bengo</li>
+        <li>Nutzungskarte der deutschen Nord- und Ostsee</li>
+      </ul>
+      <ul class="tags"><li>Cartography</li><li>ESRI ArcGIS</li><li>QGIS</li></ul>
+    </article>
+
+    <article class="card">
+      <h3>Data analysis, automation and acquisition</h3>
+      <div class="meta">WWF Germany · background work behind the maps</div>
+      <ul class="plain">
+        <li>No Fishing Zones German North Sea</li>
+        <li>Automated map creation</li>
+      </ul>
+      <ul class="tags"><li>Python</li><li>SQL</li><li>Workflow automation</li></ul>
+    </article>
+
+    <article class="card">
+      <h3>GIS administration with ArcGIS Enterprise</h3>
+      <div class="meta">DB Engineering &amp; Consulting · 2023</div>
+      <p>I ran and further developed the company's internal ArcGIS Enterprise system: turning user requirements into practical geodata solutions, managing permissions and licences, and supporting colleagues through individual advice and informal training.</p>
+      <ul class="tags"><li>ArcGIS Enterprise</li><li>User support</li><li>Training</li></ul>
+    </article>
+  </div>
+</section>
+
+<section id="planning">
+  <div class="wrap">
+    <h2>Environmental planning</h2>
+    <p class="intro">Planning projects for infrastructure and the post-mining landscape.</p>
+    <article class="card">
+      <h3>Impact assessments for DB construction projects</h3>
+      <div class="meta">DB Engineering &amp; Consulting · 2023</div>
+      <p>I took responsibility for environmental planning projects, from linear infrastructure such as new noise barriers to large-scale securing measures in the post-mining landscape. GIS analysis connected legal environmental requirements with complex project areas.</p>
+      <ul class="plain">
+        <li>Landscape management plans (Landschaftspflegerische Begleitpläne)</li>
+        <li>Species protection assessments (Artenschutzfachbeiträge)</li>
+        <li>Environmental impact assessments (Umweltverträglichkeitsprüfungen)</li>
+      </ul>
+      <ul class="tags"><li>Stakeholder coordination</li><li>Moderation</li><li>Public communication</li></ul>
+    </article>
+    <article class="card">
+      <h3>Bachelor thesis: follow-up checks of ecological compensation areas</h3>
+      <div class="meta">University of Bamberg · 2020</div>
+      <p>A GIS-based approach to checking ecological compensation areas after implementation, with field data collected in ESRI Survey123.</p>
+      <ul class="tags"><li>Survey123</li><li>Field data collection</li><li>GIS</li></ul>
+    </article>
+  </div>
+</section>
+
+<section id="experience">
+  <div class="wrap">
+    <h2>Experience</h2>
+    <p class="intro">&nbsp;</p>
+    <ol class="timeline">
+      <li><span class="when">Jan 2025 – now</span><h3>Geospatial Analyst (working student)</h3><p>WWF Germany, Africa team, Earth Observation</p></li>
+      <li><span class="when">Jan 2023 – Dec 2023</span><h3>Environmental Planning Engineer &amp; GIS Administrator</h3><p>DB Engineering &amp; Consulting, Leipzig</p></li>
+      <li><span class="when">Mar 2022 – Jun 2022</span><h3>Project Developer (working student)</h3><p>Smart City programme, City of Bamberg</p></li>
+      <li><span class="when">Sep 2021</span><h3>Internship</h3><p>Forest Biodiversity and Nature Conservation, Austrian Federal Research Centre for Forests, Vienna</p></li>
+      <li><span class="when">May 2020 – Feb 2021</span><h3>Working student</h3><p>Rebhan/Grubert, Eltmann: environmental planning, forestry reports and biotope mapping for the SüdOstLink route planning</p></li>
+      <li><span class="when">Apr 2019 – Feb 2020</span><h3>Student assistant, Geoinformatics</h3><p>Chair of Physical Geography, University of Bamberg</p></li>
+      <li><span class="when">Feb 2019 – Mar 2019</span><h3>Internship</h3><p>Cartography and Visual Communication, Leibniz Institute for Regional Geography, Leipzig</p></li>
+      <li><span class="when">Jan 2019 – Feb 2019</span><h3>Internship</h3><p>Stadt-Land-Fluss Ingenieurdienste, Bamberg</p></li>
+    </ol>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="wrap">
+    <h2>Skills &amp; education</h2>
+    <p class="intro">&nbsp;</p>
+    <div class="grid">
+      <div class="card"><h3>Geospatial tools</h3><p>ESRI ArcGIS, ArcGIS Online, ArcGIS Enterprise, Survey123, QGIS</p></div>
+      <div class="card"><h3>Data &amp; programming</h3><p>Python, SQL, database set-up and maintenance, workflow automation</p></div>
+      <div class="card"><h3>Cartography &amp; web</h3><p>Maps for reports and press, web maps, dashboards, storytelling</p></div>
+      <div class="card"><h3>Environmental planning</h3><p>Landscape management plans, species protection assessments, impact assessments, biotope mapping, forest inventories</p></div>
+      <div class="card"><h3>Collaboration</h3><p>Project management, moderation, public communication, informal training, international teamwork</p></div>
+      <div class="card"><h3>Languages</h3><p>English (TOEFL 106), French (B1+), Spanish (B1+)</p></div>
+    </div>
+    <article class="card" style="margin-top:1.25rem">
+      <h3>BA Geography</h3>
+      <div class="meta">University of Bamberg · 2020</div>
+      <p style="margin:0">MA studies in geospatial analysis ongoing.</p>
+    </article>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="wrap">
+    <h2>Contact</h2>
+    <p class="intro">Open to conversations about GIS, cartography and data for nature conservation.</p>
+    <p><a id="mail" href="mailto:maxmusterman@email.com">maxmusterman@email.com</a></p>
+    <button class="btn" id="copy" type="button">Copy email</button>
+    <span id="copied" role="status" style="margin-left:.8rem;color:var(--muted)"></span>
+  </div>
+</section>
+</main>
+
+<footer><div class="wrap">© 2026 Simon Lange</div></footer>
+
+<script>
+(function(){
+  var root=document.documentElement;
+  document.getElementById('theme').addEventListener('click',function(){
+    var dark=root.dataset.theme?root.dataset.theme==='dark':matchMedia('(prefers-color-scheme: dark)').matches;
+    root.dataset.theme=dark?'light':'dark';
+  });
+  document.getElementById('copy').addEventListener('click',function(){
+    var t=document.getElementById('mail').textContent,o=document.getElementById('copied');
+    function done(m){o.textContent=m;setTimeout(function(){o.textContent=''},2000)}
+    if(navigator.clipboard){navigator.clipboard.writeText(t).then(function(){done('Copied')},function(){done('Copy failed')})}
+    else{done('Copy not supported')}
+  });
+})();
+</script>
 </body>
 </html>
